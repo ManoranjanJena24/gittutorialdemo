@@ -13,7 +13,7 @@ function handleFormSubmit(event) {
     getUserData();
     // localStorage.setItem('users', JSON.stringify(users));
     event.target.reset();
-   
+
 }
 
 
@@ -27,10 +27,18 @@ function renderUsers(user24) {
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
         deleteButton.addEventListener('click', () => {
-            user24.splice(index, 1);
+            var id = user._id
+            console.log(id)
+            axios.delete(`https://crudcrud.com/api/a94495b64971468dafcce7ca42ccfae0/userAppointmentDetails/${id}`)
+                .then(res => {
+                    console.log(res)
+                    getUserData();
+                })
+                .catch(err => console.log(err))
+
             // localStorage.setItem('users', JSON.stringify(users));
-            addUser24(user24);
-            getUserData();
+
+
         });
         const editButton = document.createElement('button');
         editButton.textContent = 'Edit';
@@ -74,7 +82,7 @@ function getUserData() {
             renderUsers(appointment.data)
         })
         .catch(err => console.log(err))
-    
+
 }
 
 
