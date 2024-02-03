@@ -1,5 +1,6 @@
 let users = [];
-
+var url1 = "https://crudcrud.com/api/a94495b64971468dafcce7ca42ccfae0/userAppointmentDetails";
+var url = "https://crudcrud.com/api/ad994afcddaa41f78db001adac5d114e/userAppointmentDetails";
 
 function handleFormSubmit(event) {
     event.preventDefault();
@@ -10,7 +11,7 @@ function handleFormSubmit(event) {
     };
     // users.push(user);
     addUser24(user);
-    getUserData();
+
     // localStorage.setItem('users', JSON.stringify(users));
     event.target.reset();
 
@@ -29,12 +30,7 @@ function renderUsers(user24) {
         deleteButton.addEventListener('click', () => {
             var id = user._id
             console.log(id)
-            axios.delete(`https://crudcrud.com/api/a94495b64971468dafcce7ca42ccfae0/userAppointmentDetails/${id}`)
-                .then(res => {
-                    console.log(res)
-                    getUserData();
-                })
-                .catch(err => console.log(err))
+            deleteData(id);
 
             // localStorage.setItem('users', JSON.stringify(users));
 
@@ -46,10 +42,16 @@ function renderUsers(user24) {
             document.getElementById('username').value = user.username;
             document.getElementById('email').value = user.email;
             document.getElementById('phone').value = user.phone;
-            user24.splice(index, 1);
-            addUser24(user24);
+            var id1 = user._id
+            console.log(id1)
+            // editData(id1, user);
+            deleteData(id1)
+
             // localStorage.setItem('users', JSON.stringify(users));
-            getUserData();
+
+
+
+
         });
         li.appendChild(deleteButton);
         li.appendChild(editButton);
@@ -66,14 +68,42 @@ function addUser24(user) {
     // })
     //     .then(res => console.log(res))
     //     .catch(err => console.log(err))
-    axios.post('https://crudcrud.com/api/a94495b64971468dafcce7ca42ccfae0/userAppointmentDetails', user)
-        .then(res => console.log(res))
+    axios.post(`${url}`, user)
+        .then(res => {
+            console.log(res)
+            getUserData();
+        })
         .catch(err => console.log(err))
 
 }
 
+function editData(id1, user) {
+
+    axios.put(`${url}/${id1}`, user)
+        .then(res => {
+            console.log(res)
+            axios.delete(`${url}/${id1}`)
+                .then(res => {
+                    console.log(res)
+                    getUserData();
+                })
+                .catch(err => console.log(err))
+            getUserData();
+        })
+        .catch(err => console.log(err))
+}
+
+function deleteData(id) {
+    axios.delete(`${url}/${id}`)
+        .then(res => {
+            console.log(res)
+            getUserData();
+        })
+        .catch(err => console.log(err))
+}
+
 function getUserData() {
-    axios.get('https://crudcrud.com/api/a94495b64971468dafcce7ca42ccfae0/userAppointmentDetails')
+    axios.get(`${url}`)
         .then((appointment) => {
             console.log(appointment);
             // for (var i = 0; i < appointment.data.length; i++){
@@ -89,5 +119,27 @@ function getUserData() {
 
 
 document.addEventListener('DOMContentLoaded', getUserData);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
